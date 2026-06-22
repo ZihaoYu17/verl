@@ -74,7 +74,8 @@ def build_long_question(
 
 
 def convert_split(split_dataset, split: str, target_prompt_tokens: int, tokenizer):
-    data_source = f"openai/gsm8k-long-{target_prompt_tokens}"
+    # Keep the original data_source so verl's built-in GSM8K reward function is used.
+    data_source = "openai/gsm8k"
 
     def process_fn(example, idx):
         question_raw = example["question"]
@@ -98,6 +99,7 @@ def convert_split(split_dataset, split: str, target_prompt_tokens: int, tokenize
                 "target_prompt_tokens": target_prompt_tokens,
                 "measured_prompt_tokens": prompt_token_count,
                 "filler_paragraphs": filler_paragraphs,
+                "long_prompt_variant": f"gsm8k-long-{target_prompt_tokens}",
             },
         }
 
